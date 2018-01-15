@@ -11,6 +11,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
 
     let bin = &args[1];
+    let dir_to_check = &args[2];
     println!("path to cppcheck binary: {}", bin);
     let binpath = PathBuf::from(bin);
     if !binpath.is_file() {
@@ -18,13 +19,13 @@ fn main() {
     }
 
     println!("Gathering files...");
-    for entry in WalkDir::new(".") {
+    for entry in WalkDir::new(dir_to_check) {
             let entry = entry.unwrap();
             let path = entry.path();
             let string = format!("{}", path.display());
             match path.extension() {
                 Some(ext) =>  {
-                    if ext == ".cpp" || ext ==  ".cxx" || ext ==  ".c" {
+                    if ext == "cpp" || ext ==  "cxx" || ext ==  "c" || ext == "C" {
                             println!("Checking: {}", path.display());
 
                     }
