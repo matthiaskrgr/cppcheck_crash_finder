@@ -18,17 +18,30 @@ fn main() {
     }
 
     println!("Gathering files...");
+
+    let mut evil_files = Vec::new();
+
     for entry in WalkDir::new(dir_to_check) {
         let entry = entry.unwrap();
-        let path = entry.path();
-        let string = format!("{}", path.display());
-        match path.extension() {
+        let filename_path = entry.path();
+        let filename_str = format!("{}", filename_path.display());
+        match filename_path.extension() {
             Some(ext) => {
                 if ext == "cpp" || ext == "cxx" || ext == "c" || ext == "C" {
-                    println!("Checking: {}", path.display());
+                    println!("Checking: {}", &filename_str);
+                    let output = std::process::Command::new(bin).arg(&filename_str).arg("--enable=all").arg("--inconclusive").arg("--max-configs=1").arg("--debug").arg("--verbose").output().expect("failed to run cppcheck!");
+                    if ! output.status.success() {
+                        println!("Crash: {}", &filename_str);
+                        evil_files.push(filename_str.clone());
+                    }
                 }
             }
             None => continue,
         }
     } // walkdir
+
+    println!("\nCrashing files:");
+    for file in evil_files {
+        println!("{}", file);
+    }
 } // main
