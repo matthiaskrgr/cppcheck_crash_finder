@@ -6,7 +6,6 @@ use std::path::PathBuf;
 
 use walkdir::WalkDir;
 
-
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -20,19 +19,16 @@ fn main() {
 
     println!("Gathering files...");
     for entry in WalkDir::new(dir_to_check) {
-            let entry = entry.unwrap();
-            let path = entry.path();
-            let string = format!("{}", path.display());
-            match path.extension() {
-                Some(ext) =>  {
-                    if ext == "cpp" || ext ==  "cxx" || ext ==  "c" || ext == "C" {
-                            println!("Checking: {}", path.display());
-
-                    }
+        let entry = entry.unwrap();
+        let path = entry.path();
+        let string = format!("{}", path.display());
+        match path.extension() {
+            Some(ext) => {
+                if ext == "cpp" || ext == "cxx" || ext == "c" || ext == "C" {
+                    println!("Checking: {}", path.display());
                 }
-                None => continue,
             }
-
+            None => continue,
+        }
     } // walkdir
-
 } // main
