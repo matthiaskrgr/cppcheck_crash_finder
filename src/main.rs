@@ -24,6 +24,10 @@ fn main() {
     for entry in WalkDir::new(dir_to_check) {
         let entry = entry.unwrap();
         let filename_path = entry.path();
+        // don't check directory if directory is named "bla.c/"
+        if !filename_path.is_file() {
+            continue;
+        }
         let filename_str = format!("{}", filename_path.display());
         match filename_path.extension() {
             Some(ext) => {
