@@ -60,9 +60,13 @@ fn main() {
         }
     } // walkdir
 
-    let mut evil_files = Vec::new();
 
     println!("Files gathered");
+
+    let evil_files:Vec<Result<String,String>> =  files_to_check.iter().map(|x| check_file(x, bin.to_string()) ).collect();
+
+
+    /*
     for file in files_to_check {
         match check_file(&file, bin.to_string()) {
             Ok(_) => { /* everything succeeded */ }
@@ -71,9 +75,13 @@ fn main() {
             }
         }
     }
+    */
 
     println!("\nCrashing files:");
-    for file in evil_files {
-        println!("{}", file);
+    for result in evil_files {
+        match result  {
+            Ok(_) => {},
+            Err(file) => {         println!("{}", file); }
+        }
     }
 } // main
