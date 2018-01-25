@@ -1,5 +1,5 @@
-extern crate walkdir;
 extern crate rayon;
+extern crate walkdir;
 
 use std::env;
 use std::path::PathBuf;
@@ -62,28 +62,20 @@ fn main() {
         }
     } // walkdir
 
-
     println!("Files gathered");
 
-    let evil_files:Vec<Result<String,String>> =  files_to_check.par_iter().map(|x| check_file(x, bin.to_string()) ).collect();
-
-
-    /*
-    for file in files_to_check {
-        match check_file(&file, bin.to_string()) {
-            Ok(_) => { /* everything succeeded */ }
-            Err(file) => {
-                evil_files.push(file);
-            }
-        }
-    }
-    */
+    let evil_files: Vec<Result<String, String>> = files_to_check
+        .par_iter()
+        .map(|x| check_file(x, bin.to_string()))
+        .collect();
 
     println!("\nCrashing files:");
     for result in evil_files {
-        match result  {
-            Ok(_) => {},
-            Err(file) => {         println!("{}", file); }
+        match result {
+            Ok(_) => {}
+            Err(file) => {
+                println!("{}", file);
+            }
         }
     }
 } // main
