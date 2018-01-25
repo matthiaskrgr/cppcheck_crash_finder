@@ -5,6 +5,27 @@ use std::path::PathBuf;
 
 use walkdir::WalkDir;
 
+fn check_file(path: &PathBuf, binary: String) -> Result<String, String> {
+    let filename_str = format!("{}", path.display());
+    println!("Checking: {}", &filename_str);
+    let output = std::process::Command::new(binary)
+    .arg(&filename_str)
+    .arg("--enable=all")
+    .arg("--inconclusive")
+    .arg("--max-configs=1")
+    //            .arg("--debug")
+    //            .arg("--verbose")
+    .output()
+    .expect("failed to run cppcheck!");
+    if output.status.success() {
+        Ok(filename_str)
+    } else {
+        // we crashed
+        println!("Crash:        {}", &filename_str);
+        Err(filename_str)
+    }
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
 
@@ -17,7 +38,6 @@ fn main() {
     }
 
     println!("Gathering files...");
-
 
     let mut files_to_check = Vec::new();
 
@@ -40,25 +60,15 @@ fn main() {
         }
     } // walkdir
 
-
     let mut evil_files = Vec::new();
 
     println!("Files gathered");
     for file in files_to_check {
-        let filename_str = format!("{}", file.display());
-        println!("Checking: {}", &filename_str);
-        let output = std::process::Command::new(bin)
-        .arg(&filename_str)
-        .arg("--enable=all")
-        .arg("--inconclusive")
-        .arg("--max-configs=1")
-//            .arg("--debug")
-//            .arg("--verbose")
-        .output()
-        .expect("failed to run cppcheck!");
-        if !output.status.success() {
-            println!("Crash:        {}", &filename_str);
-            evil_files.push(filename_str.clone());
+        match check_file(&file, bin.to_string()) {
+            Ok(_) => { /* everything succeeded */ }
+            Err(file) => {
+                evil_files.push(file);
+            }
         }
     }
 
