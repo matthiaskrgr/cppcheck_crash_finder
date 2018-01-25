@@ -1,6 +1,5 @@
 extern crate walkdir;
 
-use std::process;
 use std::env;
 use std::path::PathBuf;
 
@@ -40,8 +39,8 @@ fn main() {
                         .arg("--enable=all")
                         .arg("--inconclusive")
                         .arg("--max-configs=1")
-                        .arg("--debug")
-                        .arg("--verbose")
+            //            .arg("--debug")
+            //            .arg("--verbose")
                         .output()
                         .expect("failed to run cppcheck!");
                     if !output.status.success() {
