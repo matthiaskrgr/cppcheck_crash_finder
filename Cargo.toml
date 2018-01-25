@@ -5,3 +5,4 @@ authors = ["Matthias Krüger <matthias.krueger@famsik.de>"]
 
 [dependencies]
 walkdir = "2.0"
+rayon = "0.9"
