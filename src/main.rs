@@ -1,9 +1,11 @@
 extern crate walkdir;
+extern crate rayon;
 
 use std::env;
 use std::path::PathBuf;
 
 use walkdir::WalkDir;
+use rayon::prelude::*;
 
 fn check_file(path: &PathBuf, binary: String) -> Result<String, String> {
     let filename_str = format!("{}", path.display());
@@ -63,7 +65,7 @@ fn main() {
 
     println!("Files gathered");
 
-    let evil_files:Vec<Result<String,String>> =  files_to_check.iter().map(|x| check_file(x, bin.to_string()) ).collect();
+    let evil_files:Vec<Result<String,String>> =  files_to_check.par_iter().map(|x| check_file(x, bin.to_string()) ).collect();
 
 
     /*
