@@ -61,8 +61,9 @@ fn main() {
             None => continue,
         }
     } // walkdir
+    let number_of_files = files_to_check.len();
+    println!("{} files gathered", number_of_files);
 
-    println!("Files gathered");
 
     let evil_files: Vec<Result<String, String>> = files_to_check
         .par_iter()
