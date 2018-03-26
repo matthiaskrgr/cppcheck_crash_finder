@@ -4,5 +4,5 @@ version = "0.1.0"
 authors = ["Matthias Krüger <matthias.krueger@famsik.de>"]
 
 [dependencies]
-walkdir = "2.0"
-rayon = "0.9"
+walkdir = "2.1"
+rayon = "1.0"
