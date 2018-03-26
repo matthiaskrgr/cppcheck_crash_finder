@@ -7,7 +7,7 @@ authors = ["Matthias Krüger <matthias.krueger@famsik.de>"]
 walkdir = "2.1"
 rayon = "1.0"
 
-[profile-release]
+[profile.release]
 codegen-units=1
 lto=true
 opt-level=3
