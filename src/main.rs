@@ -53,7 +53,7 @@ fn main() {
         match filename_path.extension() {
             Some(ext) => {
                 if ext == "c" || ext == "cl" || ext == "cpp" || ext == "cxx" || ext == "cc"
-                    || ext == "c++" || ext == "tpp" || ext == "txx" || ext == "C"
+                    || ext == "c++" || ext == "tpp" || ext == "txx" || ext == "C" || ext == "h" || ext == "hpp" 
                 {
                     files_to_check.push(filename_path.clone());
                 }
